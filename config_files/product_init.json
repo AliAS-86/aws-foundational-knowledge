@@ -1,0 +1,23 @@
+{
+    "storage": {
+        "services": {
+            "S3": "Amazon Simple Storage Service (S3)",
+            "EBS": "Amazon Elastic Block Store",
+            "EFS": "Amazon Elastic File System",
+            "DRS": "AWS Elastic Disaster Recovery"
+        }
+    },
+    "Compute": {
+        "services": {
+            "EC2": "Amazon Elastic Compute Cloud (EC2)",
+            "Lambda": "AWS Lambda Service",
+            "EKS": "Amazon Elastic Kubernetes Service (EKS)"
+        }
+    },
+    "Database": {
+        "services": {
+            "RDS": "Amazon Relational DB Service (RDS)",
+            "DynamoDB": "Amazon Managed NoSQL DB"
+        }
+    }
+}
