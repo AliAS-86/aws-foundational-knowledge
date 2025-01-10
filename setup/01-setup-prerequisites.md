@@ -1,5 +1,3 @@
----
-
 # AWS CLI and SDK Setup Prerequisites
 
 **Before you can effectively use the AWS CLI and AWS SDK for learning, you need to set up a secure and well-configured AWS account. The steps below ensure that you follow AWS best practices while getting started with these tools.**
