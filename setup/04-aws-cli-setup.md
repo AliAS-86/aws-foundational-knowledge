@@ -1,4 +1,14 @@
 # AWS CLI Setup
+---
+
+## Purpose of AWS CLI Setup:
+- The AWS Command Line Interface (CLI) enables users to interact with AWS services programmatically from the terminal, allowing efficient resource management and automation.
+
+## Benefits of Using AWS CLI for Handling AWS Operations:
+- Streamlined and repeatable resource management via commands and scripts.
+- Support for automation of workflows, reducing manual intervention.
+- Cross-platform compatibility for flexibility in development environments.
+- Direct integration with other tools for enhanced DevOps workflows.
 
 ## Prerequisites
 
@@ -41,7 +51,7 @@ You should see output similar to:
 aws-cli/2.0.0 Python/3.7.3 Linux/5.4.0-1029-aws botocore/2.0.0
 ```
 
-## Step 3: Configure AWS CLI
+## Step 3A: Configure AWS CLI with IAM User:
 
 Run the following command to configure the AWS CLI with your credentials:
 
@@ -50,6 +60,10 @@ aws configure
 ```
 
 You will be prompted to enter your AWS Access Key ID, Secret Access Key, region, and output format.
+
+## Step 3B: Configure AWS CLI with IAM Identity Center Administrative Account
+
+
 
 ## Step 4: Test Configuration
 

@@ -31,7 +31,7 @@
 - IAM Identity Center provides centralized access management using short-term credentials, reducing security risks compared to IAM users with long-term credentials. It is strongly recommended to use IAM Identity Center for improved security. Learn more about its features [here](https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html#features).
 
 ⚙️ **Setup the Administrative Account**
-- Instructions to set up IAM Identity Center using console & AWS CLI: [04-setup-iam-identity-center](./04-setup-iam-identity-center.md)
-- Instructions to set up IAM user in console & AWS CLI: [04-setup-iam-user](./04-setup-iam-user.md)
+- Instructions to set up IAM user in console & AWS CLI: [04-setup-iam-user](./02-setup-iam-user.md)
+- Instructions to set up IAM Identity Center using console & AWS CLI: [04-setup-iam-identity-center](./03-setup-iam-identity-center.md) 
 
 ---
