@@ -17,7 +17,7 @@ Before you begin, ensure you have the following:
 - An AWS account
 - Access to a terminal or command line interface
 
-## Step 1: Install AWS CLI
+## Install AWS CLI
 
 ### On macOS
 
@@ -51,9 +51,10 @@ You should see output similar to:
 aws-cli/2.0.0 Python/3.7.3 Linux/5.4.0-1029-aws botocore/2.0.0
 ```
 
-## Step 3A: Configure AWS CLI with IAM User:
+## Configure AWS CLI with IAM User:
 
-Run the following command to configure the AWS CLI with your credentials:
+1. Log-in to your AWS account with as IAM user
+2. Run the following command to configure the AWS CLI with your credentials:
 
 ```sh
 aws configure
@@ -61,7 +62,7 @@ aws configure
 
 You will be prompted to enter your AWS Access Key ID, Secret Access Key, region, and output format.
 
-## Step 3B: Configure AWS CLI with IAM Identity Center Administrative Account
+## Configure AWS CLI with IAM Identity Center Administrative Account
 
 Unlike IAM users, which use long-term credentials (access key and secret access key), IAM Identity Center does not provide direct access keys. Instead, it enables users to access specific AWS accounts and roles by creating CLI profiles. These profiles utilize short-term credentials (lasting between 1 to 12 hours) to authenticate the user's access to AWS resources within the assigned account and role.
 
@@ -101,7 +102,7 @@ $nano ~/.aws/config
 #sso_registration_scopes = sso:account:access
 ```
 
-## Step 4: Test Configuration
+## Test Configuration
 
 To test your configuration, run a simple AWS CLI command, such as listing your S3 buckets:
 
@@ -118,4 +119,4 @@ If your setup is correct, you should see a list of your S3 buckets.
 
 ## Next Steps
 
-After setting up the AWS CLI, you may want to set up the AWS SDK for your preferred programming language. Follow the instructions in the [AWS SDK Setup Guide](./aws-sdk-setup.md) to get started.
+After setting up the AWS CLI, you may want to set up the AWS SDK for your preferred programming language. Follow the instructions in the [AWS SDK Setup Guide](./04-aws-sdk-setup.md) to get started.
