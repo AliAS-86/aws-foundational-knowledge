@@ -63,6 +63,3 @@ After installation is done, you can:
     ```
 
 **Note:** Other credential configuration methods can be found here: [Boto3 Credentials Guide](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/credentials.html)
-
-
-```

@@ -135,16 +135,65 @@ AWS might provide a managed polices and role, but it is the customer responsibil
             
 #### **Groups**
 - **IAM group** is a group of IAM users that have the same permissions.
-- IAM polices can be attached to an IAM group. All IAM users in that group will inheret the policy instead of attaching policy to each individual user. 
+- IAM polices can be attached to an IAM group. All IAM users in that group will inheret the policy instead of attaching policy to each individual user.
+- A new user can be granted the policies and permissions related to their roles by simply adding the user to the related group, same for user changing roles and users being removed.
+- Groups can not be nested.
+- There are no default group created by default to contain all the account users
+- Within the account, groups names must be unique.
+- Group names aren't distinguished by case, for example you can't create groups named ADMINS and admin or Admin.
 
 #### **Roles**
-- **IAM role** another identity that is similar to IAM user as of being an identity with permission polices that determine what the identity can and can't do in AWS.
+- **IAM role** another IAM identity that you can create in your account that has specific permissions. Like IAM users and groups, you can attach an IAM policy to the role to determine what the role can and can't do in your AWS account.
+- IAM roles can be **Assumed** by:
+    - IAM user
+    - AWS service
+    - External user authenticated by an external identity provider (IdP) service.
+- When a user or service **assumes** the role they will inhirit the policies attached to that role temporarily till the role is **returned**
+- Using roles has the benefit of specified security credentials not being tied directly to an entity.
 - Unlike IAM users, IAM roles do not have a name and password, are not associated with a unique user, and can be used by anyone needs it for a short term access.
+- IAM users and AWS services don't have access to roles that they can assume automatically.
+- Access to assuming roles need to be configured in the **trust policy** of the role, it is a JOSN file that, in addition to the usual statement, effect, action keys, the definition of a **Principal** and a **Condition** keys that define who can assume the role and under what condition
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {"AWS": "arn:aws:iam:123456789012:root"},
+            "Action": "sts:AssumeRole",
+            "Condition": {"Bool": {"aws:MultiFactorAuthPresent": "true"}}
+        },
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "service": [
+                    "ec2.amazonaws.com"
+                ]
+            },
+            "Action": [
+                "sts:AssumeRole"
+            ]
+        }
+    ]
+}
+```
+- **Federated users** are users authenticated outside of AWS (e.g., in an enterprise identity system) and granted access to AWS resources without needing individual IAM user accounts.
+    - **Identity Source:** Federated users are managed in external directories or SSO systems like:
+        - Active Directory
+        - Okta
+        - Google Workspace
+        - SAML 2.0-compliant providers
+    - **Temporary Credentials:** Instead of creating long-term IAM credentials, federated users assume an IAM role to obtain short-term credentials for specific actions in AWS.
+    - **Use Cases:**
+        - Granting AWS access to large workforces without managing separate IAM users.
+        - Managing partners or third-party access.
+        - Enabling Single Sign-On (SSO) for AWS.
 
 ### IAM Monitoring Features
 - Monitoring your security access is important, and IAM provide tools that enable customers perform that.
     
-    - **IAM Analyzer Tool** is a tool that help customers to identify the resources in their organization and accounts that are shared with with external entity (e.g., other AWS accounts, organizations, or public access). This helps with identifying unintended access to the organization resources and data, which might be a swcurity risk.
+    - **IAM Analyzer Tool** is a tool that help customers to identify the resources in their organization and accounts that are shared with external entities (e.g., other AWS accounts, organizations, or public access). This helps with identifying unintended access to the organization resources and data, which might be a swcurity risk.
+        - Achieving least privilege is a continous cycle to grant the right fine-grained permissions as your requirements evolve. **IAM access analyzer** helps with stramline permissions management throughout each step of the cycle.
         - It can be generated manually from the **IAM Console** or programmatically using AWS CLI
         - Benefits of IAM Access Analyzer tool:
             - Analyzer's findings can be used to determine weather the access is intended and safe.
@@ -210,3 +259,103 @@ Below is a breakdown of the credentials required for both cases in terms of IAM 
 - ❌ Instances can be provisioned with sets of key pairs that can be used to connect to the instances, but this method is not recommended because it doesn't provide any accountability to who using it. 
 - ✅ **IAM users/roles** may be used to perform resource-specific operations programmatically via CLI using **Access Keys**
 - ✅ **IAM Identity Center users** can access tools like **AWS CLI and AWS SDKs** to interact with resources using **temporary credentials** and **SSO Sessions**
+
+### IAM Use Cases:
+- Apply detailed permissions: AWS IAM let's you create and apply permissions based on user attributes, such as department, job role, and team name, by using attribute-based access control
+- Manage per-account and application access: With AWS IAM, you can manage per-account identities. This means that you can provide multi-account access and application assignments across AWS
+- Establish organization-wide guardrails on AWS: AWS IAM provides you with the ability to establish organization-wide and preventive guardrails on AWS. You can do this by using service control policies to establish permissions guardrails for IAM users and roles, and implement a data perimeter around your account in AWS organizations.
+- Set, verify, and right-size permissions: AWS IAM is built to help you set, verify, and right-size user permissions in accordance with the least privilege principle policy. You can streamline permissions management and use accross-account findings as you set, verify, and refine polices on the journey toward least privilege.
+
+### IAM Identities vs IAM Entities
+**IAM Identities**: Objects used to define permissions and access control.
+**IAM Entities**: Principals (actors) making requests to AWS resources.
+
+#### Key Differences:
+| **Aspect**             | **IAM Identities**                              | **IAM Entities**                               |
+|------------------------|-------------------------------------------------|------------------------------------------------|
+| **Definition**         | Objects used to define permissions and access control. | Principals (actors) making requests to AWS resources. |
+| **Purpose**            | To define "who can do what" in the AWS environment. | To represent "who is performing the action" at runtime. |
+| **Examples**           | IAM Users, Groups, Roles.                       | IAM Users, IAM Roles (assumed), Federated Identities, AWS Services. |
+| **Runtime Behavior**   | Permissions and policies are defined here.      | These entities execute actions based on permissions granted by identities. |
+
+
+#### Practical Relationship
+- **IAM Identities** like users, groups, and roles define permissions (e.g., "What actions can this user perform?").
+- When these identities interact with AWS services (e.g., making an API request or assuming a role), they become **IAM Entities**.
+
+### Root User
+- **Root User** is the user created by default when an AWS account created
+- **Root User** has complete access to all AWS services and resources in the account.
+- This Identity access your account by signing in with the email address and password provided during the account creation
+- The following best practices should be followed to ensure the safety of the root user
+    - Choose strong password
+    - Enable MFA for the root user
+    - Never share root user password or access keys with anyone
+    - Disable or delete the access keys associated with the root user
+    - Create a power IAM user With full access to the AWS account, except for billing for administrative tasks.
+
+### IAM Policies
+- **IAM Policy** is statement of permissions that is granted to an entity. It can be attached to any IAM entity such as users, groups, or roles.
+- **Policies** Specify what the **Effect** is when the user requests access AWS resources, what **Actions** the user is allowed to execute, and what **Resources** these actions are allowed on.
+- **Policy Types**:
+    - Identity-based policies
+    - Resource-based policies
+    - Permissions boundaries
+    - Organizations SCPs
+    - Organizations RCPs
+    - Access control lists (ACLs)
+    - Session policies
+- **Statement**, **Effect**, **Actions**, **Resources** are the main keys in the policy, and permission json files.
+- **Entity** can have multiple policies attached to it (like an IAM user has IAM policy granting access only to EC2 service, and a second policy grant the same user aaccess to only S3 service).
+- The order inwhich the policies are evaluated has no effect on the outcome of the evaluation.
+- The final result of evaluationg attached policies are either **Allow** or **Deny** the user request.
+- If there is a conflict in granted permissions, an explicit deny take precedence over an allow statement.
+- It might be confusing to differentiat between a policy and permission when thier json files are viewed, but the main difference is that a permission json file defines a policy's structure and permissions and it is located outside of AWS, once uploaded to AWS the permission json file become a new active policy or it updates an existing customer managed policy.
+
+#### Key Distinction Between Policies and Permission JSON Files
+| **Aspect**             | **Policy**                                                                                       | **Permission JSON File**                                                                           |
+|------------------------|--------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|
+| **Purpose**            | A formal AWS object that defines permissions and controls access to AWS resources.               | A local or external JSON file used to define a policy before applying it to AWS.                 |
+| **Where It Exists**    | Stored in AWS (e.g., IAM, S3 bucket policy, etc.).                                               | Exists locally, often in a project folder or repository.                                         |
+| **Usage**              | Actively enforces permissions when attached to an IAM entity (user, group, or role).             | Used for creating or updating a policy in AWS. It must be uploaded or referenced in the AWS CLI/SDK to take effect. |
+| **Type of Entity**     | A managed or inline policy object in AWS.                                                        | A static JSON file defining permissions for a potential policy.                                  |
+| **How It’s Accessed**  | Managed through AWS Console, AWS CLI, or SDK.                                                    | Stored and managed outside AWS, often in version control systems.                                |
+| **Examples in Use**    | - IAM user policy<br>- S3 bucket policy<br>- EC2 instance role policy                            | - JSON file in a local folder<br>- Input for the `aws iam create-policy` CLI command             |
+
+#### IAM Policy Example:
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": ["dynamodb:*", "s3:*"],
+            "Resource": [
+                "arn:aws:dynamodb:region:account-number-without-hyphens:table/table-name",
+                "arn:aws:s3:::bucket-name",
+                "arn:aws:s3:::bucket-name/*"
+            ]
+        },
+        {
+            "Effect": "Deny",
+            "Action": ["dynamodb:*", "s3:*"],
+            "NotResource": [
+                "arn:aws:dynamodb:region:account-number-without-hyphens:table/table-name",
+                "arn:aws:s3:::bucket-name",
+                "arn:aws:s3:::bucket-name/*"
+            ]
+        }
+    ]
+}
+```
+- **Identity-Based Policies**: Identity-based policies are JSON permissions policy documents that control what actions an identity (users, groups of users, and roles) can perform, on which resources, and under what conditions. Identity-based policies can be further categorized:
+    - **Managed policies**: Standalone identity-based policies that you can attach to multiple users, groups, and roles in your AWS account. There are two types of managed policies:
+        - **AWS Managed Policies**
+        - **Customer Managed Policies**
+    - **Inline policies**: Policies that you add directly to a single user, group, or role. Inline policies maintain a strict one-to-one relationship between a policy and an identity. They are deleted when you delete the identity.
+
+- **Resource-Based Policies**: Resource-based policies are JSON policy documents that you attach to a resource such as an Amazon S3 bucket. These policies grant the specified principal permission to perform specific actions on that resource and defines under what conditions this applies. Resource-based policies are inline policies.
+    - There are no managed resource-based policies.
+    - In Resource-based policy, the IAM entity to be granted or revoked permissions are specified as a principal in the policy JSON file.
+    - There are no managed resource based policies.
