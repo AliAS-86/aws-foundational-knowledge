@@ -162,3 +162,51 @@ AWS might provide a managed polices and role, but it is the customer responsibil
 ### IAM Cost Effectness
 - IAM is free of charge, customer won't be charged to create identities, polices, and attaching polices to identites.
 - Charges are on actions that identites perform on services, like Amazon Elastic Compute Cloud (EC2) service, using the attached polices and permissions
+
+### Multi-factor Authentication
+Is a security layer that can be added to the user login process. With MFA enabled the user will need to enter a second form of authentication using code generating apps or a hardware key device.
+When MFA is enabled, both login credentials and MFA code are required to perform a successful sign-in.
+AWS CLI support MFA as well.
+
+### IAM Identity Center
+AWS **IAM Identity Center** is core security service and part of the AWS security best practice.
+AWS explicitly recommend **IAM Identity Center** as a best practice to manage access accross multiple AWS accounts and applications
+It aligns with the **Principle of Lease Privilege** by enabling centralized identity and access management with short-term credentials, reducing security risks.
+Although, it mainly utilized for managing access across multiple AWS accounts, IAM Identity Center can be used with single AWS account as well.
+IAM Identity Center enable **Single Sign-On (SSO)** for users to log in to AWS services like EC2 management console without the need for long term IAM credentials.
+Also users can use temporary credentials generated to access AWS resourced programmatically via tools like AWS CLI or SDK.
+
+### The Security of Service Operations vs Service Provisioning
+When considering **AWS service operations** vs **service provisioning**, the type of credentials needed depends on whether you're **interacting with AWS services** (provisioning or managing resources) or **operating on the resources** after they've been provisioned.
+Below is a breakdown of the credentials required for both cases in terms of IAM users/roles and IAM Identity Center users.
+
+#### 1. Service Provisioning
+**Definition**: Provisioning involves creating, modifying, or deleting AWS resources, such as launching an EC2 instance, creating an S3 bucket, or configuring a VPC.
+
+**Credentials Needed for Service Provisioning**
+| **Type of User**          | **Credentials**                                                                 | **Description**                                                                                     |
+|---------------------------|---------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------|
+| **IAM User/Role**         | - Access Keys (for CLI/SDK/API).<br>- Console Login Credentials (username/password). | IAM users/roles need programmatic access keys or console login credentials to provision resources. |
+| **IAM Identity Center User** | - Temporary Credentials (generated via Identity Center for CLI/SDK).<br>- SSO Session (via Identity Center portal). | Identity Center users authenticate via SSO to provision resources and generate temporary credentials for CLI/SDK use. |
+
+**Recommended Approach for Provisioning**
+- Use **IAM Identity Center users** with **permission sets** to generate temporary credentials.
+- **IAM users** can be used as well but with following best practices
+    - Rotate access keys regularly.
+    - Assign least privilege permissions (e.g., restrict to specific services like EC2, S3, or VPC).
+
+#### 2. Service Operations
+**Definition**: Operations involve interacting with AWS-provisioned resources, such as installing software, managing files, or executing commands on an EC2 instance.
+
+**Credentials Needed for Service Operations**
+| **Type of User**           | **Credentials**                                                                     | **Description**                                                                                     |
+|----------------------------|-------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------|
+| **IAM User/Role**          | - Access Keys (for API-level operations, e.g., sending commands via Systems Manager).<br>- Session Credentials (e.g., via AWS CLI AssumeRole). | IAM users/roles may be used to perform resource-specific operations programmatically via CLI or Systems Manager. |
+| **IAM Identity Center User** | - Temporary Credentials (generated via Identity Center for CLI/SDK).<br>- SSO Session (for console-based operations). | Identity Center users can access tools like AWS Systems Manager or SSO-based CLI credentials to interact with resources. |
+| **Instance-Level Credentials** | - Key Pairs (for SSH access).<br>- Session Manager Session (no SSH required). | Key pairs are required for SSH, but Session Manager (via Systems Manager) is recommended for better security and accountability. |
+
+
+**Recommended Approach for Sevice Operations**
+- ❌ Instances can be provisioned with sets of key pairs that can be used to connect to the instances, but this method is not recommended because it doesn't provide any accountability to who using it. 
+- ✅ **IAM users/roles** may be used to perform resource-specific operations programmatically via CLI using **Access Keys**
+- ✅ **IAM Identity Center users** can access tools like **AWS CLI and AWS SDKs** to interact with resources using **temporary credentials** and **SSO Sessions**
