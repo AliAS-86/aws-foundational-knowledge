@@ -74,9 +74,7 @@ Customers are in control and responsible for the security of everything that the
 
 AWS might provide a managed polices and role, but it is the customer responsibility to enable it and use it.
 
-#### Examples of the implementation of the **Shared Responsibility Model**
-
-# Shared Responsibility Examples
+#### Shared Responsibility Examples
 
 | **Responsibility**                      | **Amazon Simple Storage Service (Amazon S3)**                              | **Amazon Elastic Compute Cloud (Amazon EC2)**                      | **Amazon Virtual Private Cloud (Amazon VPC)**                     |
 |-----------------------------------------|---------------------------------------------------------------------------|----------------------------------------------------------------------|----------------------------------------------------------------------|
@@ -98,7 +96,7 @@ AWS might provide a managed polices and role, but it is the customer responsibil
 - IAM user credentials include:
     - name and password to access the **AWS Management Console**
     - Up to access keys to programmatically access AWS services and resources with **AWS CLI**, **AWS SDKs**, or direct HTTPS calls using APIs for individual AWS services
-- IAM enables customers to manage manage passwords by configuring a password policy, which is set of rules that desfine the type of password that an IAM user can set, like password minimum length, what characters to use, expireation, password changing by users, prevent password reuse, etc.
+- IAM enables customers to manage passwords by configuring a password policy, which is set of rules that desfine the type of password that an IAM user can set, like password minimum length, what characters to use, expireation, password changing by users, prevent password reuse, etc.
 - By default IAM user has **no permissions** when created for the first time.
 - Customer can give IAM user permissions by creating **IAM polices** and attach them to the **IAM user**
     - **IAM polices** are JSON documents that defines specific actions that the user can perform on a specific AWS service or resource
