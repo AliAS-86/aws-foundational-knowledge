@@ -79,7 +79,6 @@ Below can be done to add the IAM power user access keys to the vault
 # Adding default profile
 aws-vault add default
 # You will be prompted to enter the access key ID and the secret access key that you retrieved when creating the access key in the console
-# this might take some time to finish
 ```
 
 ```bash
