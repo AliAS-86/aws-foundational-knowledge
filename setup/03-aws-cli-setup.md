@@ -53,10 +53,36 @@ aws-cli/2.0.0 Python/3.7.3 Linux/5.4.0-1029-aws botocore/2.0.0
 
 ## Configure AWS CLI with IAM User:
 
-1. Log-in to your AWS account with as IAM user
-2. Run the following command to configure the AWS CLI with your credentials:
+### Install aws-vault
+[AWS Vault](https://github.com/99designs/aws-vault) is an open-source tool to securely store and access AWS credentials in a development environment.
+I don't want to store the IAM credentials unsecurely, so I am using aws-vault for enhanced security
 
-```sh
+```bash
+# install dependencies and brew tool
+$sudo apt update
+$sudo apt install build-essential procps curl file git -y
+$/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# Adding brew to my system PATH
+$echo >> ~/.bashrc
+$echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.bashrc
+$eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
+# Install aws-vault
+brew install aws-vault
+```
+
+### Add AWS IAM User Credentials to AWS Vault
+Below can be done to add the IAM power user access keys to the vault
+
+```bash
+# Adding default profile
+aws-vault add default
+# You will be prompted to enter the access key ID and the secret access key that you retrieved when creating the access key in the console
+# this might take some time to finish
+```
+
+```bash
 aws configure
 ```
 
