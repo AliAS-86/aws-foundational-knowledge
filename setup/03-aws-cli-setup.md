@@ -78,14 +78,43 @@ Below can be done to add the IAM power user access keys to the vault
 ```bash
 # Adding default profile
 aws-vault add default
-# You will be prompted to enter the access key ID and the secret access key that you retrieved when creating the access key in the console
+# You will be prompted to enter the access key ID and the secret access key for the IAM user that you want to use to connect to AWS services and resources
+# The process of adding default profile for the first time will create a config file under .aws directory, edit the file to add few more details
+$nono ~/.aws/config
+# Default region (Required):
+region = us-east-1
+# Add mfa device ID if MFA is enabled for the user (Required)
+mfa_serial = arn:aws:iam::xxxxxxxxxxxx:mfa/poweruser
+# Add output format (Optional)
+output = json
 ```
+The access key ID and secret access key will be stored securely in the backend of the aws-vault service.
 
 ```bash
-aws configure
+# Test the aws-vault and AWS CLI configuration and communication with AWS account
+aws-vault exec default -- aws s3 ls
+# IF MFA enabled then you will be prompted to enter MFA code from our assigned device
+# If you have no S3 bucket created, there will be no return
+# if connection is successful if you don't get error
+```
+You can add an alias to the **aws-vault exec** command for ease of use by updating 
+
+```bash
+# Edit the aliases file
+sudo nano ~/.bash_aliases
+# Add the following lines
+# This alias is for default profile, if you configure aws-vault with different profile name, then use that nameinstead of default
+alias aws-cli="aws-vault exec default -- aws"
+# to execute the command with --debug
+alias aws-cli-debug="aws-vault --debug exec default -- aws"
+# Apply changes
+source ~/.bashrc
+# now try the aliases
+aws-cli iam get-account-password-policy
+aws-cli-debug iam get-account-password-policy
 ```
 
-You will be prompted to enter your AWS Access Key ID, Secret Access Key, region, and output format.
+Now you are ready to launch your CLI exercises 🚀 with a fine security best practices 🔒
 
 ## Configure AWS CLI with IAM Identity Center Administrative Account
 
