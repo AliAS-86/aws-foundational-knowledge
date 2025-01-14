@@ -3,7 +3,7 @@ As part of the best practices to secure the AWS account root user, the below gui
 
 ## Step-by-Step Guide
 ### 1. Log in to the AWS Management Console and Navigate to IAM Dashboard
-- Use the **root user** to log in.
+- Use the **root user** to log in to your AWS account.
 - In the **search box** at the top-left corner of the page, search **IAM**
 - In the **IAM Dashboard**, confirm the security recommendations for the root user are all met, and no further actions required
 **Security recommendations list - No pending actions
@@ -11,7 +11,7 @@ As part of the best practices to secure the AWS account root user, the below gui
 
 - Navigate to **Users** under **Access management** in the left-hand navigation panel.
 
-### 2. Create the IAM User
+### 2. Create the IAM Power User
 - Click **Create user** to access the creation workflow
 - **Specify user details step**
     - **User details**
