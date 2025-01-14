@@ -39,6 +39,7 @@ You opened a new AWS account. The account consists of five teams of 10 developer
      - `Managers`
      - `Administrators`
    - Assign permissions based on roles for each group.
+   
 
 4. **IAM Policies**:
    - Attach policies to groups:
