@@ -13,4 +13,7 @@ aws-cli iam update-account-password-policy --cli-input-json file://knowledge_by_
 aws-cli iam list-groups
 # Create a new group called admins
 aws-cli iam create-group --group-name Admins
+# Create a custom policy
+
+# Attach custom policy to Admins group
 ```
