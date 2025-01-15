@@ -79,7 +79,7 @@ Sign-out the root user and re-sign in with the newly created IAM user
 - **Retrive access key**
 
 ## Next steps
-Now you can configure AWS CLI with the IAM user credentials by following instructions in [AWS CLI Setup](./03-aws-cli-setup.md#configure-aws-cli-with-iam-user)
+Now you can configure AWS CLI with the IAM user credentials by following instructions in [AWS CLI Setup](./02-aws-cli-setup.md#configure-aws-cli-with-iam-user)
 
 
 
